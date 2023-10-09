@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "strict": true,
+    "jsx": "react-jsx",
+    "jsxImportSource": "hono/jsx",
+    "types": ["bun-types"],
+    "paths": {
+      "@app/*": ["./src/app/*"],
+      "@config/*": ["./src/config/*"],
+      "@database/*": ["./src/database/*"],
+      "@generators/*": ["./bin/internals/generators/*"],
+      "@scripts/*": ["./bin/scripts/*"],
+      "@src/*": ["./src/*"]
+    }
+  }
+}

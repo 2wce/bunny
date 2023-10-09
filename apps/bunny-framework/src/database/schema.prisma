@@ -1,0 +1,307 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+//
+// --------------------------------------------------------------------------
+//  Authentication & Authorization
+// --------------------------------------------------------------------------
+//
+//  These models are used to support authentication and authorization features
+//  in your application. Because of this let's try to keep them as simple as
+//  possible. We want to avoid adding any fields or relationships that are not
+//  directly related to authentication or authorization.
+//
+
+model Connection {
+  id           String @id @default(cuid())
+  providerName String
+  providerId   String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId String
+
+  @@unique([providerName, providerId])
+}
+
+// --------------------------------------------------------------------------
+
+model Password {
+  hash String
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId String @unique
+}
+
+// --------------------------------------------------------------------------
+
+model Permission {
+  id          String @id @default(cuid())
+  action      String // e.g. create, read, update, delete
+  entity      String // e.g. product, order, user, etc.
+  access      String // e.g. own or any
+  description String @default("")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  roles Role[]
+
+  @@unique([action, entity, access])
+}
+
+// --------------------------------------------------------------------------
+
+model Role {
+  id          String @id @default(cuid())
+  name        String @unique
+  description String @default("")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  users       User[]
+  permissions Permission[]
+}
+
+// --------------------------------------------------------------------------
+
+model Session {
+  id             String   @id @default(cuid())
+  expirationDate DateTime
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId String
+
+  // non-unique foreign key
+  @@index([userId])
+}
+
+// --------------------------------------------------------------------------
+
+model Verification {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+
+  /// The type of verification, e.g. "email" or "phone"
+  type String
+
+  /// The thing we're trying to verify, e.g. a user's email or phone number
+  target String
+
+  /// The secret key used to generate the otp
+  secret String
+
+  /// The algorithm used to generate the otp
+  algorithm String
+
+  /// The number of digits in the otp
+  digits Int
+
+  /// The number of seconds the otp is valid for
+  period Int
+
+  /// The valid characters for the otp
+  charSet String
+
+  /// When it's safe to delete this verification
+  expiresAt DateTime?
+
+  @@unique([target, type])
+}
+
+//
+// --------------------------------------------------------------------------
+//  Core Application Models
+// --------------------------------------------------------------------------
+//
+//  These models are the core of your application. They represent the main
+//  entities in your business domain, such as Users, Products, Orders, etc.
+//
+model Address {
+  id            String   @id @default(cuid())
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  streetAddress String
+  city          String
+  state         String?
+  zipCode       String?
+  country       String
+  user          User     @relation(fields: [userId], references: [id])
+  userId        String
+}
+
+model Category {
+  id       String    @id @default(cuid())
+  name     String
+  products Product[]
+}
+
+// --------------------------------------------------------------------------
+
+model Order {
+  id              String           @id @default(cuid())
+  userId          String
+  user            User             @relation(fields: [userId], references: [id])
+  orderDate       DateTime
+  status          OrderStatus
+  orderItems      OrderItem[]
+  payment         Payment?
+  shippingDetails ShippingDetails?
+}
+
+// --------------------------------------------------------------------------
+
+model OrderItem {
+  id        String  @id @default(cuid())
+  orderId   String
+  order     Order   @relation(fields: [orderId], references: [id])
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+  quantity  Int // @TODO: check constraint - quantity >= 1
+  subTotal  Int // monetary values are ALWAYS stored in cents
+}
+
+// --------------------------------------------------------------------------
+
+model Payment {
+  id            String        @id @default(cuid())
+  orderId       String        @unique
+  order         Order         @relation(fields: [orderId], references: [id])
+  paymentDate   DateTime
+  paymentMethod String
+  totalAmount   Int // monetary values are ALWAYS stored in cents
+  status        PaymentStatus
+}
+
+// --------------------------------------------------------------------------
+
+model Product {
+  id            String         @id @default(cuid())
+  name          String
+  description   String
+  price         Int // monetary values are ALWAYS stored in cents
+  stockQuantity Int // TODO: check constraint - stockQuantity >= 0
+  category      Category       @relation(fields: [categoryId], references: [id])
+  categoryId    String
+  brand         String
+  imageUrl      String
+  reviews       Review[]
+  orderItems    OrderItem[] // @TODO: use for tracking?
+  images        ProductImage[]
+}
+
+// --------------------------------------------------------------------------
+
+model ProductImage {
+  id          String   @id @default(cuid())
+  altText     String?
+  contentType String
+  blob        Bytes
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  product     Product  @relation(fields: [productId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  productId   String
+
+  // non-unique foreign key
+  @@index([productId])
+}
+
+// --------------------------------------------------------------------------
+
+model ShippingDetails {
+  id              String   @id @default(cuid())
+  orderId         String   @unique
+  order           Order    @relation(fields: [orderId], references: [id])
+  shippingAddress String // @TODO: add address model
+  shippingDate    DateTime
+  trackingNumber  String
+}
+
+// --------------------------------------------------------------------------
+
+model User {
+  id          String       @id @default(cuid())
+  email       String       @unique
+  name        String
+  phoneNumber String
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  orders      Order[]
+  reviews     Review[]
+  images      UserImage?
+  password    Password?
+  sessions    Session[]
+  role        Role?        @relation(fields: [roleId], references: [id])
+  roleId      String?
+  connections Connection[]
+  addresses   Address[]
+}
+
+// --------------------------------------------------------------------------
+
+model UserImage {
+  id          String   @id @default(cuid())
+  altText     String?
+  contentType String
+  blob        Bytes // @TODO: image url instead?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId      String   @unique
+}
+
+// --------------------------------------------------------------------------
+
+model Review {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  productId String
+  product   Product  @relation(fields: [productId], references: [id])
+  rating    Int // @TODO: check constraint - rating >= 1 && rating <= 5
+  comment   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+//
+// --------------------------------------------------------------------------
+//  Enums
+// --------------------------------------------------------------------------
+//
+//  These enums are used to define the allowed values for certain fields in
+//  your application. For example, the `status` field on the `Order` model
+//
+
+enum PaymentStatus {
+  PENDING // The payment has been created but has not been processed yet.
+  PROCESSING // The payment is being processed, which may include tasks like payment verification and capturing the funds.
+  SUCCEEDED // The payment has been successfully processed.
+  FAILED // The payment has failed.
+  CANCELLED // The payment has been canceled by the customer or an admin.
+  REFUNDED // The payment has been refunded to the customer.
+}
+
+enum OrderStatus {
+  PENDING // The order has been created but has not been processed or shipped yet.
+  PROCESSING // The order is being processed, which may include tasks like payment verification and packing.
+  SHIPPED // The order has been shipped and is on its way to the customer.
+  DELIVERED // The order has been successfully delivered to the customer.
+  CANCELLED // The order has been canceled by the customer or an admin.
+  REFUNDED // The order has been refunded to the customer.
+}

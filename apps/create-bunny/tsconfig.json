@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "strict": true,
+    "jsx": "react-jsx",
+    "types": [
+      "bun-types" // add Bun global
+    ],
+    "paths": {
+      "@commands/*": ["./src/commands/*"],
+      "@utils/*": ["./src/utils/*"],
+    }
+  }
+}

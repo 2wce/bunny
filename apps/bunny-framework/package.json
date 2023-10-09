@@ -1,0 +1,77 @@
+{
+  "name": "@bunny/framework",
+  "version": "1.0.1",
+  "description": "Headless API for ecommerce store",
+  "main": "src/index.ts",
+  "author": "Kudakwashe Mupeni",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/2wce/headless-api.git"
+  },
+  "license": "MIT",
+  "private": false,
+  "trustedDependencies": ["@prisma/client"],
+  "scripts": {
+    "dev": "bun run --hot src/index.ts",
+    "route:list": "bun run bin/scripts/routes/list.ts",
+    "test": "bun test",
+    "coverage": "bun test --coverage",
+    "semantic-release": "semantic-release",
+    "generate": "node ./bin/index.js generate"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.3.1",
+    "@sentry/bun": "^7.70.0",
+    "hono": "^3.7.3"
+  },
+  "devDependencies": {
+    "@flydotio/dockerfile": "0.4.10",
+    "@semantic-release/changelog": "^6.0.1",
+    "@semantic-release/git": "^10.0.1",
+    "bun-types": "^0.6.2",
+    "plop": "^4.0.0",
+    "prisma": "^5.3.1",
+    "semantic-release": "^22.0.1"
+  },
+  "release": {
+    "branches": [
+      {
+        "name": "main",
+        "prerelease": false
+      }
+    ],
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      [
+        "@semantic-release/npm",
+        {
+          "npmPublish": false
+        }
+      ],
+      "@semantic-release/github",
+      [
+        "@semantic-release/changelog",
+        {
+          "changelogFile": "CHANGELOG.md"
+        }
+      ],
+      [
+        "@semantic-release/git",
+        {
+          "assets": [
+            "CHANGELOG.md",
+            "package.json"
+          ],
+          "message": "chore(release): set `package.json` to ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
+        }
+      ]
+    ]
+  },
+  "prisma": {
+    "schema": "src/database/schema.prisma"
+  },
+  "publishConfig": {
+    "access": "restricted"
+  }
+}

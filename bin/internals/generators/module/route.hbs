@@ -1,0 +1,25 @@
+import { Hono } from "hono";
+import { {{properCase name
+}}Controller } from "./controller";
+
+
+/**
+ * --------------------------------------------------------------------------
+ * Here is where you can register {{properCase
+  name
+}} routes for your
+ * application.
+ * --------------------------------------------------------------------------
+ */
+
+const {{name
+}} = new Hono();
+const controller = new {{properCase name}}Controller();
+
+{{name}}.post("/{{name}}s", controller.create);
+{{name}}.delete("/{{name}}s", controller.delete);
+{{name}}.get("/{{name}}s/:id", controller.findOne);
+{{name}}.get("/{{name}}s", controller.findMany);
+{{name}}.patch("/{{name}}s/:id", controller.update);
+
+export default {{name}};
