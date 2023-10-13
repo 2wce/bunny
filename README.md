@@ -1,3 +1,5 @@
+[![release](https://github.com/kudamupeni/bunny/actions/workflows/release.yml/badge.svg)](https://github.com/kudamupeni/bunny/actions/workflows/release.yml)
+
 # Turborepo starter
 
 This is an official starter Turborepo.
