@@ -1,3 +1,10 @@
+## [1.0.2](https://github.com/kudamupeni/bunny/compare/v1.0.1...v1.0.2) (2023-10-13)
+
+
+### Bug Fixes
+
+* add npm token ([1414eda](https://github.com/kudamupeni/bunny/commit/1414edad24cff3e80591cce02b5bee1e22b2ccb0))
+
 ## [1.0.1](https://github.com/kudamupeni/bunny/compare/v1.0.0...v1.0.1) (2023-10-13)
 
 
