@@ -1,6 +1,10 @@
 {
-  "name": "create-bunny",
+  "name": "@kudamupeni/create-bunny",
   "module": "src/cli.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kudamupeni/bunny.git"
+  },
   "version": "0.0.0",
   "type": "module",
   "bin": {
@@ -9,7 +13,7 @@
   "scripts": {
     "dev": "bun src/cli.ts",
     "build": "bun build --compile ./src/cli.ts --outfile=dist/cli",
-    "release": "release publish"
+    "release": "npm publish"
   },
   "devDependencies": {
     "@ossjs/release": "^0.8.0",
