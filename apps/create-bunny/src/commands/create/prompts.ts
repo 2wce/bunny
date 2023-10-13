@@ -1,7 +1,7 @@
-import type { PackageManager } from "@turbo/utils";
-import { getAvailablePackageManagers, validateDirectory } from "@turbo/utils";
+import { getAvailablePackageManagers } from "@utils/managers";
+import type { CreateCommandArgument, PackageManager } from "@utils/types";
+import { validateDirectory } from "@utils/validateDirectory";
 import inquirer from "inquirer";
-import type { CreateCommandArgument } from "./types";
 
 export async function directory({ dir }: { dir: CreateCommandArgument }) {
   const projectDirectoryAnswer = await inquirer.prompt<{

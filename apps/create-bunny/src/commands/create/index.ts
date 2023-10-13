@@ -1,19 +1,20 @@
-import type { Project } from "@bunny/workspaces";
 import {
-  ConvertError, getPackageManagerMeta, getWorkspaceDetails,
+  getPackageManagerMeta,
   install
-} from "@bunny/workspaces";
-import {
-  createProject,
-  DownloadError, getAvailablePackageManagers, logger
-} from "@utils";
+} from "@utils/managers/meta";
+import { getWorkspaceDetails } from "@utils/managers/workspace";
+import type { CreateCommandArgument, CreateCommandOptions, Project } from "@utils/types";
+
+import { createProject, DownloadError } from "@utils/createProject";
+import { tryGitCommit, tryGitInit } from "@utils/git";
+import { isDefaultExample } from "@utils/isDefaultExample";
+import { isOnline } from "@utils/isOnline";
+import * as logger from "@utils/logger";
+import { getAvailablePackageManagers } from "@utils/managers";
+import { ConvertError } from '@utils/types';
 import chalk from "chalk";
 import path from "node:path";
-import { tryGitCommit, tryGitInit } from "../../utils/git";
-import { isDefaultExample } from "../../utils/isDefaultExample";
-import { isOnline } from "../../utils/isOnline";
 import * as prompts from "./prompts";
-import type { CreateCommandArgument, CreateCommandOptions } from "./types";
 
 const { bunnyGradient, bunnyLoader, info, error, warn } = logger;
 
@@ -46,13 +47,14 @@ export async function create(
   packageManagerCmd: CreateCommandArgument,
   opts: CreateCommandOptions
 ) {
+  console.log({ opts, directory, packageManagerCmd });
   const {
     packageManager: packageManagerOpt,
     skipInstall,
     skipTransforms,
   } = opts;
-  logger.log(chalk.bold(bunnyGradient(`\n>>> TURBOREPO\n`)));
-  info(`Welcome to Turborepo! Let's get you set up with a new codebase.`);
+  logger.log(chalk.bold(bunnyGradient(`\n>>> BUNNY\n`)));
+  info(`Welcome to Bunny Let's get you set up with a new codebase.`);
   logger.log();
 
   // if both the package manager option and command are provided, the option takes precedence
@@ -100,7 +102,7 @@ export async function create(
     handleErrors(err);
   }
 
-  const { hasPackageJson, availableScripts, repoInfo } = projectData;
+  const { hasPackageJson, availableScripts } = projectData;
 
   // create a new git repo after creating the project
   tryGitInit(root, `feat(create-bunny): create ${exampleName}`);
@@ -122,7 +124,7 @@ export async function create(
         }
       : selectedPackageManagerDetails;
 
-  info("Created a new Turborepo with the following:");
+  info("Created a new Bunny project with the following:");
   logger.log();
   if (project.workspaceData.workspaces.length > 0) {
     const workspacesForDisplay = project.workspaceData.workspaces
@@ -186,13 +188,13 @@ export async function create(
     logger.log(
       `${chalk.bold(
         bunnyGradient(">>> Success!")
-      )} Your new Turborepo is ready.`
+      )} Your new Bunny project is ready.`
     );
   } else {
     logger.log(
       `${chalk.bold(
         bunnyGradient(">>> Success!")
-      )} Created a new Turborepo at "${relativeProjectDir}".`
+      )} Created a new Bunny project at "${relativeProjectDir}".`
     );
   }
 
@@ -212,7 +214,7 @@ export async function create(
         logger.log(`     ${SCRIPTS_TO_DISPLAY[script]} all apps and packages`);
         logger.log();
       });
-    logger.log(`Turborepo will cache locally by default. For an additional`);
+    logger.log(`Bunny project will cache locally by default. For an additional`);
     logger.log(`speed boost, enable Remote Caching with Vercel by`);
     logger.log(`entering the following command:`);
     logger.log();

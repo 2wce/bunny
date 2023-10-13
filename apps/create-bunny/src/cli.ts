@@ -1,9 +1,10 @@
 import * as logger from "@utils/logger";
 import { notifyUpdate } from "@utils/notifyUpdate";
 import chalk from "chalk";
-import { Command } from "commander";
+import { Command, Option } from "commander";
 import * as cliPkg from "../package.json";
 import { create } from "./commands";
+//import { create } from "./commands";
 
 const createBunnyCli = new Command();
 
@@ -14,12 +15,12 @@ createBunnyCli
   .usage(`${chalk.bold("<project-directory>")} [options]`)
   .argument("[project-directory]")
   // @TODO: will do
-  // .addOption(
-  //   new Option(
-  //     "-m, --package-manager <package-manager>",
-  //     "Specify the package manager to use"
-  //   ).choices(["npm", "yarn", "pnpm", "bun"])
-  // )
+  .addOption(
+    new Option(
+      "-m, --package-manager <package-manager>",
+      "Specify the package manager to use"
+    ).choices(["npm", "yarn", "pnpm", "bun"])
+  )
   .option(
     "--skip-install",
     "Do not run a package manager install after creating the project",
@@ -37,6 +38,18 @@ createBunnyCli
   .version(cliPkg.version, "-v, --version", "Output the current version")
   .helpOption("-h, --help", "Display help for command")
   .action(create);
+
+
+
+// createBunnyCli.command('split')
+//   .description('Split a string into substrings and display as an array')
+//   .argument('<string>', 'string to split')
+//   .option('--first', 'display just the first substring')
+//   .option('-s, --separator <char>', 'separator character', ',')
+//   .action((str, options) => {
+//     const limit = options.first ? 1 : undefined;
+//     console.log(str.split(options.separator, limit));
+//   });
 
 createBunnyCli
   .parseAsync()
