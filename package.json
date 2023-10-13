@@ -3,6 +3,7 @@
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
+    "release": "turbo run release",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
@@ -12,9 +13,8 @@
     "turbo": "latest"
   },
   "name": "bunny",
-  "packageManager": "bun@1.0.4",
+  "packageManager": "bun@1.0.6",
   "workspaces": [
-    "apps/*",
-    "packages/*"
+    "apps/create-bunny"
   ]
 }

@@ -1,6 +1,6 @@
 {
   "name": "@bunny/framework",
-  "version": "1.0.1",
+  "version": "0.0.0",
   "description": "Headless API for ecommerce store",
   "main": "src/index.ts",
   "author": "Kudakwashe Mupeni",

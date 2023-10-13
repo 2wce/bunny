@@ -1,98 +1,58 @@
-name: Test and release
-
-# Run the workflow when a Pull Request is opened or when changes are pushed to master
+# .github/workflows/release.yml
+name: release
 on:
-  pull_request:
   push:
     branches: [main]
-
 jobs:
-  # sonarcloud:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #       with:
-  #         # Disabling shallow clone is recommended for improving relevancy of reporting
-  #         fetch-depth: 0
-  #     - name: SonarCloud Scan
-  #       uses: sonarsource/sonarcloud-github-action@master
-  #       env:
-  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  #         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
-  test:
-    runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        # Run the steps below with the following versions of Node.js
-        node-version: [18.x]
-
-    env:
-      DATABASE_URL: 'mysql://root:root@localhost:3306/test'
-
-    steps:
-      # Start pre-installed Ubuntu mysql service
-      - name: Start MySQL
-        run: sudo /etc/init.d/mysql start
-
-      # Create test DB for e2e tests
-      - name: Create test DB
-        run: mysql -e 'CREATE DATABASE test;' --user=root --password=root
-
-      # Fetch the latest commit
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      # Setup Node.js using the appropriate version
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node-version }}
-
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v1
-        with:
-          bun-version: latest
-
-      # Install package dependencies
-      - name: Install
-        run: bun install
-
-      # # Run migrations
-      # - name: Migrate
-      #   run: npm run migrate
-
-      # Run tests
-      - name: Test
-        run: yarn test
-
   release:
-    # Only release on push to main
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-
-    # Waits for test jobs for each Node.js version to complete
-    needs: [test]
-
+    permissions:
+      packages: write
+      contents: read
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v1
+        uses: actions/checkout@v3
         with:
-          node-version: 18.x
+          # Fetch the entire commit history to include all commits.
+          # By default, "actions/checkout" checks out the repository
+          # at the commit that's triggered the workflow. This means
+          # that the "@ossjs/release" may not be able to read older
+          # commits that may affect the next release version number.
+          fetch-depth: 0
+
+          # Provide your custom "CI_GITHUB_TOKEN" secret that holds
+          # your GitHub Personal Access Token.
+          token: ${{ secrets.CI_GITHUB_TOKEN }}
 
       - name: Setup Bun
         uses: oven-sh/setup-bun@v1
         with:
           bun-version: latest
 
-      - name: Install
-        run: bun install
+      - uses: actions/setup-node@v3
+        with:
+          always-auth: true
+          node-version: 18.x
+          registry-url: https://npm.pkg.github.com/
 
-      - name: Release
-        run: npx semantic-release
+
+      # Configure the Git user that'd author release commits.
+      - name: Setup Git
+        run: |
+          git config --local user.name "GitHub Actions"
+          git config --local user.email "actions@github.com"
+
+      - run: bun i
+      #- run: npm test
+
+      - run: bun run release
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Set the "GITHUB_TOKEN" environmental variable
+          # required by "@ossjs/release" to communicate with GitHub.
+          GITHUB_TOKEN: ${{ secrets.CI_GITHUB_TOKEN }}
+
+          # Set the "NODE_AUTH_TOKEN" environmental variable
+          # that "actions/setup-node" uses as the "_authToken"
+          # in the generated ".npmrc" file to authenticate
+          # publishing to NPM registry.
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
