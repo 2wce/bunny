@@ -43,7 +43,7 @@ jobs:
           git config --local user.email "actions@github.com"
 
       - run: bun i
-      #- run: npm test
+      - run: bun run build
 
       - run: bun run release
         env:
