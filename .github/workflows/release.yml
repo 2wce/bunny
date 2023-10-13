@@ -12,13 +12,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-        with:
-          # Fetch the entire commit history to include all commits.
-          # By default, "actions/checkout" checks out the repository
-          # at the commit that's triggered the workflow. This means
-          # that the "@ossjs/release" may not be able to read older
-          # commits that may affect the next release version number.
-          fetch-depth: 0
 
       - name: Setup Bun
         uses: oven-sh/setup-bun@v1
