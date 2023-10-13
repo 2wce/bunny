@@ -8,7 +8,8 @@
   },
   "scripts": {
     "dev": "bun src/cli.ts",
-    "build": "bun build --compile ./src/cli.ts --outfile=dist/cli"
+    "build": "bun build --compile ./src/cli.ts --outfile=dist/cli",
+    "release": "release publish"
   },
   "devDependencies": {
     "@ossjs/release": "^0.8.0",
