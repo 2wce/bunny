@@ -20,7 +20,8 @@
     "@types/tar": "^6.1.6",
     "bun-types": "latest",
     "gradient-string": "^2.0.2",
-    "restore-cursor": "^5.0.0"
+    "restore-cursor": "^5.0.0",
+    "update-check": "^1.5.4"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
