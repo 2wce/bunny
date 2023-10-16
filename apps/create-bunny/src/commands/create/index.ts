@@ -47,7 +47,6 @@ export async function create(
   packageManagerCmd: CreateCommandArgument,
   opts: CreateCommandOptions
 ) {
-  console.log({ opts, directory, packageManagerCmd });
   const {
     packageManager: packageManagerOpt,
     skipInstall,

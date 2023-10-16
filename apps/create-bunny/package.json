@@ -20,8 +20,6 @@
   },
   "devDependencies": {
     "@ossjs/release": "^0.8.0",
-    "@semantic-release/changelog": "^6.0.1",
-    "@semantic-release/git": "^10.0.1",
     "@types/async-retry": "^1.4.6",
     "@types/fs-extra": "^11.0.2",
     "@types/got": "^9.6.12",
@@ -30,7 +28,6 @@
     "bun-types": "latest",
     "gradient-string": "^2.0.2",
     "restore-cursor": "^5.0.0",
-    "semantic-release": "^22.0.1",
     "update-check": "^1.5.4"
   },
   "peerDependencies": {

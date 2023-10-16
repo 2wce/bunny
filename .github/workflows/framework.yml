@@ -1,0 +1,34 @@
+# .github/workflows/release.yml
+name: release
+on:
+  push:
+    branches: [main]
+    paths: [apps/bunny-framework]
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - uses: actions/setup-node@v3
+        with:
+          always-auth: true
+          node-version: 18.x
+          registry-url: https://npm.pkg.github.com/
+
+      - name: Pushes to another repository
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.CI_GITHUB_TOKEN }}
+        with:
+          source-directory: 'apps/bunny-framework'
+          destination-github-username: '2wce'
+          destination-repository-name: 'bunny-framework'
+          user-email: kudamupeni@gmail.com
+          target-branch: main
