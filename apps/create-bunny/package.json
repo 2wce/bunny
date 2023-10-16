@@ -8,7 +8,7 @@
     "type": "git",
     "url": "git+https://github.com/kudamupeni/bunny.git"
   },
-  "version": "1.0.6",
+  "version": "0.0.0",
   "type": "module",
   "bin": {
     "create-bunny": "dist/cli"
