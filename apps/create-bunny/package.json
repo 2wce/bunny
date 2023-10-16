@@ -6,7 +6,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kudamupeni/bunny.git",
+    "url": "git+https://github.com/kudamupeni/bunny.git"
   },
   "version": "1.0.5",
   "type": "module",
