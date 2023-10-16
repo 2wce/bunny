@@ -1,3 +1,12 @@
+## [1.0.5](https://github.com/kudamupeni/bunny/compare/v1.0.4...v1.0.5) (2023-10-16)
+
+
+### Bug Fixes
+
+* add correct scope ([02e8de9](https://github.com/kudamupeni/bunny/commit/02e8de9c66f27612e8ce3b83600c9e3b0f2a8221))
+* try new token ([734c4b4](https://github.com/kudamupeni/bunny/commit/734c4b4f8e264369ea17e6743f50d93edbf455d7))
+* update token config ([4adf358](https://github.com/kudamupeni/bunny/commit/4adf35871c9069bd7ae1366475922e59858872a0))
+
 ## [1.0.4](https://github.com/kudamupeni/bunny/compare/v1.0.3...v1.0.4) (2023-10-13)
 
 
