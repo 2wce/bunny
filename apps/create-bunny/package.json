@@ -1,9 +1,12 @@
 {
   "name": "@2wce/create-bunny",
   "module": "src/cli.ts",
+  "author": {
+    "name": "Kudakwashe Mupeni"
+  },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kudamupeni/bunny.git"
+    "url": "git+https://github.com/kudamupeni/bunny.git",
   },
   "version": "1.0.5",
   "type": "module",
