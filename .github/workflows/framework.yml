@@ -5,7 +5,7 @@ on:
     branches: [main]
     paths: [apps/bunny-framework]
 jobs:
-  release:
+  framework:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
