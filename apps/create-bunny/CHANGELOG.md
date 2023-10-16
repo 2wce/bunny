@@ -1,3 +1,10 @@
+## [1.0.6](https://github.com/kudamupeni/bunny/compare/v1.0.5...v1.0.6) (2023-10-16)
+
+
+### Bug Fixes
+
+* update author ([8e1939c](https://github.com/kudamupeni/bunny/commit/8e1939ce89844fdf4c38054193ca91671cdf6f4d))
+
 ## [1.0.5](https://github.com/kudamupeni/bunny/compare/v1.0.4...v1.0.5) (2023-10-16)
 
 
