@@ -1,3 +1,10 @@
+## [1.0.4](https://github.com/kudamupeni/bunny/compare/v1.0.3...v1.0.4) (2023-10-13)
+
+
+### Bug Fixes
+
+* resolve npm warning ([9b30bdc](https://github.com/kudamupeni/bunny/commit/9b30bdc9d28aee82d691289235a978f1e65ddaeb))
+
 ## [1.0.3](https://github.com/kudamupeni/bunny/compare/v1.0.2...v1.0.3) (2023-10-13)
 
 
