@@ -1,7 +1,7 @@
 # syntax = docker/dockerfile:1
 
 # Adjust BUN_VERSION as desired
-ARG BUN_VERSION=1.0.4
+ARG BUN_VERSION=1.0.6
 
 # Adjust NODE_VERSION as desired
 ARG NODE_VERSION=18.18.0
