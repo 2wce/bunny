@@ -1,5 +1,6 @@
 {
-  "name": "@2wce/create-bunny",
+  "private": false,
+  "name": "create-bunny",
   "module": "src/cli.ts",
   "license": "MIT",
   "author": {
