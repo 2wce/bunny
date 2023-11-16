@@ -44,6 +44,18 @@ jobs:
           git config --local user.name "GitHub Actions"
           git config --local user.email "actions@github.com"
 
+      - name: Pushes to another repository
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          #SSH_DEPLOY_KEY: ${{ secrets.SSH_DEPLOY_KEY }}
+          API_TOKEN_GITHUB: ${{ secrets.CI_GITHUB_TOKEN }}
+        with:
+          source-directory: 'apps/bunny-framework'
+          destination-github-username: '2wce'
+          destination-repository-name: 'bunny-template'
+          user-email: terrencemupeni@gmail.com@pina.cat
+          target-branch: main
+
       - run: bun i
       - run: bun run build
       - run: bun run release
