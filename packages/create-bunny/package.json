@@ -1,6 +1,7 @@
 {
   "name": "@2wce/create-bunny",
   "module": "src/cli.ts",
+  "license": "MIT",
   "author": {
     "name": "Kudakwashe Mupeni"
   },
