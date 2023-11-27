@@ -14,24 +14,27 @@
   "scripts": {
     "dev": "bun run --hot src/index.ts",
     "route:list": "bun run bin/scripts/routes/list.ts",
-    "test": "bun test",
+    "test": "prisma migrate deploy && vitest",
     "coverage": "bun test --coverage",
     "semantic-release": "semantic-release",
     "generate": "node ./bin/index.js generate"
   },
   "dependencies": {
-    "@prisma/client": "^5.3.1",
-    "@sentry/bun": "^7.70.0",
-    "hono": "^3.7.3"
+    "@prisma/client": "5.6.0",
+    "@sentry/bun": "7.70.0",
+    "awilix": "9.0.0",
+    "hono": "3.10.2"
   },
   "devDependencies": {
-    "@flydotio/dockerfile": "0.4.10",
-    "@semantic-release/changelog": "^6.0.1",
-    "@semantic-release/git": "^10.0.1",
-    "bun-types": "^0.6.2",
-    "plop": "^4.0.0",
-    "prisma": "^5.3.1",
-    "semantic-release": "^22.0.1"
+    "@flydotio/dockerfile": "0.4.11",
+    "@semantic-release/changelog": "6.0.3",
+    "@semantic-release/git": "10.0.1",
+    "bun-types": "1.0.14",
+    "plop": "4.0.0",
+    "prisma": "5.6.0",
+    "semantic-release": "22.0.8",
+    "vitest": "0.34.6",
+    "vite-tsconfig-paths": "4.2.1"
   },
   "release": {
     "branches": [

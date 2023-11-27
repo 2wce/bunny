@@ -6,7 +6,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
@@ -158,7 +158,7 @@ model Order {
   userId          String
   user            User             @relation(fields: [userId], references: [id])
   orderDate       DateTime
-  status          OrderStatus
+  status          String
   orderItems      OrderItem[]
   payment         Payment?
   shippingDetails ShippingDetails?
@@ -179,13 +179,13 @@ model OrderItem {
 // --------------------------------------------------------------------------
 
 model Payment {
-  id            String        @id @default(cuid())
-  orderId       String        @unique
-  order         Order         @relation(fields: [orderId], references: [id])
+  id            String   @id @default(cuid())
+  orderId       String   @unique
+  order         Order    @relation(fields: [orderId], references: [id])
   paymentDate   DateTime
   paymentMethod String
   totalAmount   Int // monetary values are ALWAYS stored in cents
-  status        PaymentStatus
+  status        String
 }
 
 // --------------------------------------------------------------------------
@@ -288,20 +288,20 @@ model Review {
 //  your application. For example, the `status` field on the `Order` model
 //
 
-enum PaymentStatus {
-  PENDING // The payment has been created but has not been processed yet.
-  PROCESSING // The payment is being processed, which may include tasks like payment verification and capturing the funds.
-  SUCCEEDED // The payment has been successfully processed.
-  FAILED // The payment has failed.
-  CANCELLED // The payment has been canceled by the customer or an admin.
-  REFUNDED // The payment has been refunded to the customer.
-}
+// enum PaymentStatus {
+//   PENDING // The payment has been created but has not been processed yet.
+//   PROCESSING // The payment is being processed, which may include tasks like payment verification and capturing the funds.
+//   SUCCEEDED // The payment has been successfully processed.
+//   FAILED // The payment has failed.
+//   CANCELLED // The payment has been canceled by the customer or an admin.
+//   REFUNDED // The payment has been refunded to the customer.
+// }
 
-enum OrderStatus {
-  PENDING // The order has been created but has not been processed or shipped yet.
-  PROCESSING // The order is being processed, which may include tasks like payment verification and packing.
-  SHIPPED // The order has been shipped and is on its way to the customer.
-  DELIVERED // The order has been successfully delivered to the customer.
-  CANCELLED // The order has been canceled by the customer or an admin.
-  REFUNDED // The order has been refunded to the customer.
-}
+// enum OrderStatus {
+//   PENDING // The order has been created but has not been processed or shipped yet.
+//   PROCESSING // The order is being processed, which may include tasks like payment verification and packing.
+//   SHIPPED // The order has been shipped and is on its way to the customer.
+//   DELIVERED // The order has been successfully delivered to the customer.
+//   CANCELLED // The order has been canceled by the customer or an admin.
+//   REFUNDED // The order has been refunded to the customer.
+// }

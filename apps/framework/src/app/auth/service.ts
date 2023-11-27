@@ -1,33 +1,34 @@
 import { SALT_ROUNDS } from "@config/auth";
-import prisma from "@config/database";
+import { ErrorFactory } from "@config/error";
 import { PrismaClient, User } from "@prisma/client";
+import { omit } from "@utils/omit";
 
 export class AuthService {
   private prisma: PrismaClient;
+  private errorFactory: ErrorFactory;
 
-  constructor() {
+  constructor(prisma: PrismaClient, errorFactory: ErrorFactory) {
     this.prisma = prisma;
+    this.errorFactory = errorFactory;
   }
 
   public async createUser(userData: any): Promise<User> {
     return await this.prisma.$transaction(async (prisma) => {
       // create user
       const user = await prisma.user.create({
-        data: userData,
+        data: omit(userData, ["password"]),
       });
 
       // verify user exists
       if (!user) {
-        // @TODO:  log error to sentry & make error obscure
-        throw new Error("Could not create user");
+        throw this.errorFactory.createUserCreationError("Could not create user");
       }
 
       // create password
       const password = await this.createPassword(userData.password, user.id);
 
       if (!password) {
-        // @TODO:  log error to sentry & make error obscure
-        throw new Error("Could not create password");
+        throw this.errorFactory.createPasswordCreationError("Could not create password");
       }
 
       return user;

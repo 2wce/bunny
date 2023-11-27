@@ -1,3 +1,5 @@
+import prisma from "@config/database";
+import { ErrorFactory } from "@config/error";
 import { Prisma } from "@prisma/client";
 import { Context, Env } from "hono";
 import { AuthService } from "./service";
@@ -7,7 +9,8 @@ export class AuthController {
   private service: AuthService;
 
   constructor() {
-    this.service = new AuthService();
+    const errorFactory = new ErrorFactory();
+    this.service = new AuthService(prisma, errorFactory);
   }
 
   public async forgotPassowrd(c: Context): Promise<Response> {
