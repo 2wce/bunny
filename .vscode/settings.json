@@ -1,3 +1,6 @@
 {
-  "editor.defaultFormatter": "mfeckies.handlebars-formatter"
+  "editor.defaultFormatter": "mfeckies.handlebars-formatter",
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
 }

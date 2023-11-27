@@ -6,7 +6,7 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -40,8 +40,8 @@ model Connection {
 model Password {
   hash String
 
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  userId String @unique
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @id
 }
 
 // --------------------------------------------------------------------------

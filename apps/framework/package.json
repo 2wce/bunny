@@ -14,7 +14,9 @@
   "scripts": {
     "dev": "bun run --hot src/index.ts",
     "route:list": "bun run bin/scripts/routes/list.ts",
-    "test": "prisma migrate deploy && vitest",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "test": "yarn docker:up && yarn prisma migrate deploy && bun test",
     "coverage": "bun test --coverage",
     "semantic-release": "semantic-release",
     "generate": "node ./bin/index.js generate"

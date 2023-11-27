@@ -1,28 +1,25 @@
 # syntax = docker/dockerfile:1
+FROM node:alpine AS base
 
-# Adjust BUN_VERSION as desired
-ARG BUN_VERSION=1.0.6
+RUN apk update && apk add --no-cache \
+  ca-certificates \
+  curl
 
 # Adjust NODE_VERSION as desired
 ARG NODE_VERSION=18.18.0
 ARG NODE_PACKAGE=node-v$NODE_VERSION-linux-x64
 ARG NODE_HOME=/opt/$NODE_PACKAGE
 
-ARG PORT=3000
-
-FROM ubuntu AS base
-
-RUN apt-get update && apt-get install -y \
-  ca-certificates \
-  curl
-
 # We need to install Node for bun to work with Hono & prisma for some reason
 ENV NODE_PATH $NODE_HOME/lib/node_modules
 ENV PATH $NODE_HOME/bin:$PATH
 
-RUN curl https://nodejs.org/dist/v$NODE_VERSION/$NODE_PACKAGE.tar.gz | tar -xzC /opt/
+RUN curl https://nodejs.org/dist/v"$NODE_VERSION"/"$NODE_PACKAGE".tar.gz | tar -xzC /opt/
 
-RUN npm install -g bun@$BUN_VERSION
+# Adjust BUN_VERSION as desired
+ARG BUN_VERSION=1.0.6
+
+RUN npm install -g bun@"$BUN_VERSION"
 
 LABEL fly_launch_runtime="Bun/Prisma"
 
@@ -37,31 +34,29 @@ ENV NODE_ENV="production"
 FROM base AS build
 
 # Install packages needed to build node modules
-RUN apt-get update -qq && \
-    apt-get install -y build-essential openssl pkg-config python-is-python3
+RUN apk add --no-cache build-base openssl pkg-config python3
 
 # Install node modules
-COPY --link bun.lockb package.json ./
-RUN bun install
+COPY package.json yarn.lock ./
+RUN yarn install --frozen-lockfile
 
 # Generate Prisma Client
-COPY --link src/database ./src/database
+COPY src/database ./src/database
 RUN bunx prisma generate
 
 # Copy application code
-COPY --link . .
+COPY . .
 
 # Final stage for app image
 FROM base
 
 # Install packages needed for deployment
-RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y openssl && \
-    rm -rf /var/lib/apt/lists /var/cache/apt/archives
+RUN apk add --no-cache openssl
 
 # Copy built application
 COPY --from=build /app /app
 
 # Start the server by default, this can be overwritten at runtime
+ARG PORT=3000
 EXPOSE $PORT
 CMD [ "bun", "src/index.ts" ]
