@@ -1,6 +1,6 @@
-import { reset_db } from "@src/utils/reset_db";
 import { beforeAll, beforeEach, describe, expect, it, jest } from "bun:test";
 import { Context } from "hono";
+import { reset_db } from "../../../utils/reset_db";
 import { AuthController } from "../controller";
 
 // mock('./service', () => {

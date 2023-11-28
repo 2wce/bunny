@@ -12,7 +12,7 @@
   "private": false,
   "trustedDependencies": ["@prisma/client"],
   "scripts": {
-    "dev": "bun run --hot src/index.ts",
+    "dev": "bun run --hot server.ts",
     "route:list": "bun run bin/scripts/routes/list.ts",
     "docker:up": "docker-compose up -d",
     "docker:down": "docker-compose down",

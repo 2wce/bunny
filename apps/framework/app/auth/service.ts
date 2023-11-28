@@ -1,8 +1,8 @@
-import { SALT_ROUNDS } from "@config/auth";
-import { ErrorFactory } from "@config/error";
 import { PrismaClient, User } from "@prisma/client";
-import { omit } from "@utils/omit";
 import { password } from "bun";
+import { SALT_ROUNDS } from "../../config/auth";
+import { ErrorFactory } from "../../config/error";
+import { omit } from "../../utils/omit";
 
 export class AuthService {
   private prisma: PrismaClient;

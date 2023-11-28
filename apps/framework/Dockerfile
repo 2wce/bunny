@@ -41,7 +41,7 @@ COPY package.json yarn.lock ./
 RUN yarn install --frozen-lockfile
 
 # Generate Prisma Client
-COPY src/database ./src/database
+COPY database ./database
 RUN bunx prisma generate
 
 # Copy application code
@@ -59,4 +59,4 @@ COPY --from=build /app /app
 # Start the server by default, this can be overwritten at runtime
 ARG PORT=3000
 EXPOSE $PORT
-CMD [ "bun", "src/index.ts" ]
+CMD [ "bun", "server.ts" ]

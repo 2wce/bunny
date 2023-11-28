@@ -1,5 +1,5 @@
 // Import the Prisma client from the database configuration
-import prisma from "@config/database";
+import prisma from "../config/database";
 
 // Define an asynchronous function to reset the database
 export const reset_db = async () => {

@@ -1,10 +1,13 @@
-import prisma from "@config/database";
-import { ErrorFactory } from "@config/error";
 import { Prisma } from "@prisma/client";
 import { Context, Env } from "hono";
+import prisma from "../../config/database";
+import { ErrorFactory } from "../../config/error";
 import { AuthService } from "./service";
 
-type RegisterInput = Pick<Prisma.UserCreateInput, 'email' | 'password' | 'name' | 'phoneNumber'>
+type RegisterInput = Pick<
+  Prisma.UserCreateInput,
+  "email" | "password" | "name" | "phoneNumber"
+>;
 export class AuthController {
   private service: AuthService;
 

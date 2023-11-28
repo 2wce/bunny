@@ -50,7 +50,7 @@ jobs:
           #SSH_DEPLOY_KEY: ${{ secrets.SSH_DEPLOY_KEY }}
           API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
         with:
-          source-directory: 'apps/bunny-framework'
+          source-directory: 'apps/framework'
           destination-github-username: '2wce'
           destination-repository-name: 'bunny-template'
           user-email: terrencemupeni@gmail.com@pina.cat

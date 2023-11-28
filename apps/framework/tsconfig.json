@@ -9,13 +9,12 @@
     "moduleResolution": "NodeNext",
     "module": "NodeNext",
     "paths": {
-      "@app/*": ["./src/app/*"],
-      "@config/*": ["./src/config/*"],
-      "@database/*": ["./src/database/*"],
+      "@app/*": ["./app/*"],
+      "@config/*": ["./config/*"],
+      "@database/*": ["./database/*"],
       "@generators/*": ["./bin/internals/generators/*"],
       "@scripts/*": ["./bin/scripts/*"],
-      "@src/*": ["./src/*"],
-      "@utils/*": ["./src/utils/*"]
+      "@utils/*": ["./utils/*"]
     }
   }
 }
