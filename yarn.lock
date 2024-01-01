@@ -2888,10 +2888,10 @@ homedir-polyfill@^1.0.1:
   dependencies:
     parse-passwd "^1.0.0"
 
-hono@3.10.2:
-  version "3.10.2"
-  resolved "https://registry.yarnpkg.com/hono/-/hono-3.10.2.tgz#fdbd9e0ed47ca9e078740a69e5177259cbe4dd37"
-  integrity sha512-QwJLjWs3e+nZ3b5nQrrdJpYCJqiTK744jeYhX7yhZdxwcQ3KIohBfzI2dA8gSF6HEZkmFUdiKL1BelJ8utIm4w==
+hono@3.11.12:
+  version "3.11.12"
+  resolved "https://registry.yarnpkg.com/hono/-/hono-3.11.12.tgz#8236c08c0fbf811ae46d1b2cf452b0f4788a062b"
+  integrity sha512-TrxH75bc0m2UbvrhaXkoo32A9OhkJtvICAYgYWtxqLDOxBjRqSikyp4K7HTbnWkPeg9Z+2Q3nv0dN4o8kL6yLg==
 
 hook-std@^3.0.0:
   version "3.0.0"
